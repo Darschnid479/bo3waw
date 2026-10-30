@@ -1,32 +1,32 @@
-# WaW to BO3 Converter v1.0
+# WaW to BO3 Converter — v2.0 World Geometry Bridge
 
-A Visual Basic .NET 10 WinForms tool for converting supported Call of Duty: World at War Zombies map data into BO3 Radiant `.map` references.
+**Windows / Visual Basic .NET 10 / BO3 Radiant**
 
-## Features
+## v2.0 world geometry support
 
-- Decode supported PC WaW `.ff` FastFiles (`IWffu100`, v387, zlib).
-- Recover original MapEnts entity positions from supported zones.
-- Export an **entities-only** `.map` reference for BO3 Radiant (no world geometry).
-- Convert brush geometry from **editable WaW Radiant `.map` source files** into BO3 `iwmap 4` files.
-- Extract `.iwd` resources, generate conversion reports and preview recovered placements.
-- Export compatible source brush data to a ZombieForge `.zforge.json` project.
+- Import *editable* WaW Radiant `.map` brush geometry and approximate supported patch meshes.
+- Import `.obj` world meshes exported by third-party WaW game extractors, triangulate and produce thin closed BO3 Radiant brushes.
+- Combine world geometry with recovered MapEnts object locations from supported WaW PC `.ff` FastFiles.
+- Support optional `material_mapping.csv` and `model_mapping.csv` for explicitly specified BO3 replacements.
+- Export `iwmap 4` `.map` plus reports, source backup, and ZombieForge JSON for moderately sized maps.
+- Detect OBJ triangle limits and report incompleteness instead of silently inventing world geometry.
+- Includes `BUILD_WINDOWS.bat`, `SELF_TEST_WINDOWS.bat`, and `UPLOAD_TO_GITHUB.bat` in the full project archive.
 
-> **Important:** Compiled FF files alone are **not** converted to playable, complete maps. No collision, world mesh, world brushes or Zombies gameplay are reconstructed from them in v1.0. FF exports are placement references. BO3 Mod Tools and further adaptation are required.
+**Critical limitation:** v2.0 does **not** decompile the compiled `GfxWorld`/`clipMap` world geometry directly from a `.ff` file. With `.ff` alone it can recover only entity placements. Import a real WaW world-geometry `.map` or `.obj` export first. Model assets, UVs, exact textures, collision parity, sound, lighting and Zombies gameplay scripts are **not** ported automatically. This is not an automatic 100% playable map port.
 
-## Build on Windows
+World geometry extraction options:
+- [WaWSPMapExporter](https://github.com/kejjjjj/WaWSPMapExporter) — source-like brush, terrain, model export from a supported running WaW SP/Zombies build.
+- [Husky](https://github.com/Scobalula/Husky) — external world OBJ export.
+- [C2M](https://github.com/sheilan102/C2M) — another game geometry exporter.
 
-1. Install the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0).
-2. Clone or download this repository.
-3. Run `BUILD_WINDOWS.bat` (build, publish and self-test).
-4. Open `dist\win-x64\WaWtoBO3Converter.exe`.
-5. Select a `.ff`, source `.map`, or folder and output directory; click **CONVERT TO BO3 .MAP**.
+## Source status
 
-## Example
+The complete **v2.0 ZIP/source package has been generated in the ChatGPT conversation**, but the actual source files have **not yet been synced to this GitHub repository**. To publish them here, unpack the ZIP and run `UPLOAD_TO_GITHUB.bat` from its project root on a PC with Git for Windows and GitHub authentication. Do not use `BUILD_WINDOWS.bat` from this partial repo until those files appear.
 
-`tests/generate_waw420_example.py` can regenerate the entities-only reference for `nazi_zombie_420.ff` when you supply your own copy of the FF. The original game/mod FastFile is **not included** in this repository.
+## Build after syncing
 
-## Status
+Install the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0). Run `BUILD_WINDOWS.bat` in the synced project root. The build script publishes win-x64 and runs built-in tests.
 
-**v1.0 source preview.** FF decompression and source-data checks were run against a user-provided test file; Windows compilation and live BO3 Radiant import are still unverified. See `docs/QUICK_START_NO.md` and `docs/CHANGELOG.md`.
+**Validation:** Static checks and Python FF zlib decompression against `nazi_zombie_420.ff` passed. Native Windows compilation, conversion of actual in-game WaW world exporter output, and live BO3 Radiant import remain unverified.
 
-This repository does not include third-party game assets. Only import files you have the right to use.
+No third-party game assets are included. Ensure you have permission to port/reuse any map resources.
